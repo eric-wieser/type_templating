@@ -86,3 +86,16 @@ def test_doc_example():
 
     m = MyList(["Hello", "World"])
     assert isinstance(m, MyList[str, 2])
+
+
+def test_base_class_as_parameter():
+    T = TemplateParameter('T')
+    class HasBaseOf(T, metaclass=Template[T]):
+        pass
+    class Test:
+        pass
+    v = HasBaseOf[Test]()
+    assert isinstance(v, Test)
+    v = HasBaseOf[int]()
+    assert isinstance(v, int)
+

@@ -32,6 +32,9 @@ class TemplateParameter:
     def __repr__(self):
         return self.name
 
+    def _substitute(self, arg_values):
+        return arg_values[self]
+
 
 def _make_template_name(name, args) -> str:
     return "{}[{}]".format(
@@ -139,6 +142,8 @@ class Template(type, metaclass=_TemplateMeta):
         for b in bases:
             if isinstance(b, TemplateExpression):
                 bases_no_templates += b.template.__bases__
+                base_template_exprs.append(b)
+            elif isinstance(b, TemplateParameter):
                 base_template_exprs.append(b)
             else:
                 bases_no_templates.append(b)
